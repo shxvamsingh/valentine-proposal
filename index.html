@@ -11,10 +11,12 @@
 :root {
   --pink: #FF385C;
   --bg: #fff6f8;
-  --grey: #f1f1f1;
+  --grey: #f2f2f2;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
@@ -27,6 +29,16 @@ body {
   overflow: hidden;
 }
 
+/* WRAPPER keeps both screens aligned */
+.wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* CARD */
 .card {
   width: min(92%, 640px);
@@ -36,14 +48,19 @@ body {
   border-radius: 32px;
   box-shadow: 0 24px 60px rgba(0,0,0,0.18);
   text-align: center;
-  position: relative;
+  position: absolute;
+  opacity: 1;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
   transition: opacity 0.5s ease, transform 0.5s ease;
+  z-index: 5;
 }
 
 .hidden {
   opacity: 0;
   pointer-events: none;
-  transform: scale(0.96);
+  transform: translate(-50%, -50%) scale(0.96);
 }
 
 /* CORNER HEARTS */
@@ -126,11 +143,12 @@ button {
 .heart {
   position: fixed;
   bottom: -40px;
-  font-size: 34px;
+  font-size: 36px;
   color: transparent;
-  -webkit-text-stroke: 2px rgba(255,56,92,0.5);
+  -webkit-text-stroke: 2px rgba(255,56,92,0.45);
   animation: floatUp linear forwards;
   pointer-events: none;
+  z-index: 1;
 }
 
 @keyframes floatUp {
@@ -143,53 +161,57 @@ button {
 
 <body>
 
-<!-- SCREEN 1 -->
-<div class="card" id="screen1">
-  <div class="corner tl">♡♡</div>
-  <div class="corner tr">♡♡</div>
-  <div class="corner bl">♡♡</div>
-  <div class="corner br">♡♡</div>
+<div class="wrapper">
 
-  <h1>Anamika, will you be my Valentine?</h1>
+  <!-- SCREEN 1 -->
+  <div class="card" id="screen1">
+    <div class="corner tl">♡♡</div>
+    <div class="corner tr">♡♡</div>
+    <div class="corner bl">♡♡</div>
+    <div class="corner br">♡♡</div>
 
-  <div class="subtext">
-    It’s only been 8 years.<br />
-    No pressure.
+    <h1>Anamika, will you be my Valentine?</h1>
+
+    <div class="subtext">
+      It’s only been 8 years.<br />
+      No pressure.
+    </div>
+
+    <div class="buttons">
+      <button class="yes" onclick="showYes()">Yes</button>
+      <button class="no" id="noBtn">No 🙈</button>
+    </div>
+
+    <div class="hint">The No button is a little shy.</div>
   </div>
 
-  <div class="buttons">
-    <button class="yes" onclick="showYes()">Yes</button>
-    <button class="no" id="noBtn">No 🙈</button>
+  <!-- SCREEN 2 -->
+  <div class="card hidden" id="screen2">
+    <div class="corner tl">♡♡</div>
+    <div class="corner tr">♡♡</div>
+    <div class="corner bl">♡♡</div>
+    <div class="corner br">♡♡</div>
+
+    <h1>As expected.</h1>
+
+    <div class="image">
+      <img src="image.jpg" alt="Us">
+    </div>
+
+    <div class="message">
+      Eight years.<br />
+      So many memories.<br />
+      And you still chose Yes.<br /><br />
+
+      You’re my favourite constant.<br />
+      My safe place.<br />
+      My favourite person.<br /><br />
+
+      Happy Valentine’s, Anamika.<br />
+      Still us. Always.
+    </div>
   </div>
 
-  <div class="hint">The No button is a little shy.</div>
-</div>
-
-<!-- SCREEN 2 -->
-<div class="card hidden" id="screen2">
-  <div class="corner tl">♡♡</div>
-  <div class="corner tr">♡♡</div>
-  <div class="corner bl">♡♡</div>
-  <div class="corner br">♡♡</div>
-
-  <h1>As expected.</h1>
-
-  <div class="image">
-    <img src="image.jpg" alt="Us">
-  </div>
-
-  <div class="message">
-    Eight years.<br />
-    So many memories.<br />
-    And you still chose Yes.<br /><br />
-
-    You’re my favourite constant.<br />
-    My safe place.<br />
-    My favourite person.<br /><br />
-
-    Happy Valentine’s, Anamika.<br />
-    Still us. Always.
-  </div>
 </div>
 
 <script>
