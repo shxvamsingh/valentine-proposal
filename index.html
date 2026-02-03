@@ -11,6 +11,7 @@
 :root {
   --pink: #FF385C;
   --bg: #fff6f8;
+  --grey: #f1f1f1;
 }
 
 * { box-sizing: border-box; }
@@ -28,16 +29,14 @@ body {
 
 /* CARD */
 .card {
-  position: fixed;
-  inset: 0;
-  margin: auto;
-  width: min(92%, 620px);
+  width: min(92%, 640px);
   background: var(--pink);
   color: white;
   padding: 64px 48px;
   border-radius: 32px;
   box-shadow: 0 24px 60px rgba(0,0,0,0.18);
   text-align: center;
+  position: relative;
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
@@ -50,7 +49,7 @@ body {
 /* CORNER HEARTS */
 .corner {
   position: absolute;
-  font-size: 22px;
+  font-size: 26px;
   color: transparent;
   -webkit-text-stroke: 2px white;
 }
@@ -69,20 +68,21 @@ h1 {
 .subtext {
   font-size: 16px;
   opacity: 0.9;
-  margin-bottom: 40px;
+  margin-bottom: 36px;
 }
 
+/* BUTTONS */
 .buttons {
   display: flex;
   justify-content: center;
-  gap: 18px;
-  margin-bottom: 14px;
+  gap: 16px;
+  margin-bottom: 12px;
 }
 
 button {
   padding: 14px 34px;
   border-radius: 999px;
-  font-size: 17px;
+  font-size: 16px;
   cursor: pointer;
   border: none;
 }
@@ -94,12 +94,12 @@ button {
 }
 
 .no {
-  background: transparent;
-  color: white;
-  border: 2px solid rgba(255,255,255,0.9);
-  position: fixed;
+  background: var(--grey);
+  color: #333;
+  border: 1px solid #ddd;
 }
 
+/* HINT */
 .hint {
   font-size: 13px;
   opacity: 0.85;
@@ -122,19 +122,21 @@ button {
   line-height: 1.6;
 }
 
-/* FLOATING HEART (ONLY ON INTERACTION) */
-.pop-heart {
+/* FLOATING HEARTS */
+.heart {
   position: fixed;
-  font-size: 18px;
+  bottom: -40px;
+  font-size: 34px;
   color: transparent;
-  -webkit-text-stroke: 1.5px rgba(255,56,92,0.8);
-  animation: pop 1.2s ease forwards;
+  -webkit-text-stroke: 2px rgba(255,56,92,0.5);
+  animation: floatUp linear forwards;
   pointer-events: none;
 }
 
-@keyframes pop {
-  from { transform: translateY(0) scale(0.8); opacity: 1; }
-  to { transform: translateY(-60px) scale(1.3); opacity: 0; }
+@keyframes floatUp {
+  from { transform: translateY(0); opacity: 0; }
+  20% { opacity: 0.6; }
+  to { transform: translateY(-110vh); opacity: 0; }
 }
 </style>
 </head>
@@ -156,7 +158,7 @@ button {
   </div>
 
   <div class="buttons">
-    <button class="yes" onclick="showYes(event)">Yes</button>
+    <button class="yes" onclick="showYes()">Yes</button>
     <button class="no" id="noBtn">No 🙈</button>
   </div>
 
@@ -191,40 +193,38 @@ button {
 </div>
 
 <script>
+/* HEARTS FROM BOTTOM */
+setInterval(() => {
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.innerText = "♡";
+  h.style.left = Math.random() * 100 + "vw";
+  h.style.animationDuration = 10 + Math.random() * 6 + "s";
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 16000);
+}, 900);
+
 /* NO BUTTON ESCAPE */
 const noBtn = document.getElementById("noBtn");
 let attempts = 0;
 
-function moveNo() {
+noBtn.addEventListener("mouseenter", () => {
   if (attempts >= 4) return;
   attempts++;
+
+  noBtn.style.position = "fixed";
 
   const x = Math.random() * (window.innerWidth - 120);
   const y = Math.random() * (window.innerHeight - 120);
 
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
-}
+});
 
-noBtn.addEventListener("mouseenter", moveNo);
-noBtn.addEventListener("touchstart", moveNo);
-
-/* YES CLICK */
-function showYes(e) {
-  popHeart(e.clientX, e.clientY);
+/* YES */
+function showYes() {
   document.getElementById("screen1").classList.add("hidden");
   document.getElementById("screen2").classList.remove("hidden");
-}
-
-/* SMALL HEART POP */
-function popHeart(x, y) {
-  const heart = document.createElement("div");
-  heart.className = "pop-heart";
-  heart.innerText = "♡";
-  heart.style.left = x + "px";
-  heart.style.top = y + "px";
-  document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 1200);
 }
 </script>
 
